@@ -1,54 +1,84 @@
-/*
 let playerSelection;
 let computerSelection;
 let playerScore = 0;
 let computerScore = 0;
-
-// Randomly selects computer choice from array.
+let roundWinner = '';
 const playChoices = ['rock','paper','scissors'];
+const pScore = document.getElementById('pScore');
+const cScore = document.getElementById('cScore');
+
+//Plays round with selected button
+const buttons = document.querySelectorAll('button');
+buttons.forEach((button) => {
+  button.addEventListener('click', () => {
+    playRound(button.id)
+  })
+});
+
+function updateScore() {
+    if (roundWinner === 'tie') {
+      scoreInfo.textContent = "It's a tie!"
+    } else if (roundWinner === 'player') {
+      scoreInfo.textContent = 'You won!'
+    } else if (roundWinner === 'computer') {
+      scoreInfo.textContent = 'You lost!'
+    }
+    pScore.textContent = `Player Score: ${playerScore}`
+    cScore.textContent = `Computer Score: ${computerScore}`
+
+  }
+
+
+
 // Determines winner from player's choice and computer's choice.
 function playRound(playerSelection, computerSelection) {
-let computerPlay = playChoices[Math.floor(Math.random() * playChoices.length)];
-computerSelection = computerPlay;
-playerInput = prompt("Rock, paper, or scissors?");
-playerSelection = playerInput.toLowerCase();
+    let computerPlay = playChoices[Math.floor(Math.random() * playChoices.length)];
+    computerSelection = computerPlay;
 
-if (playerSelection == "rock" && computerSelection == "paper") {
- alert("Computer wins! Paper beats rock.")
- computerScore += 1;
+    if (playerSelection == "rock" && computerSelection == "paper") {
+    computerScore += 1;
+    roundWinner = 'computer';
+    }
+    else if (playerSelection == "rock" && computerSelection == "scissors") {
+    playerScore += 1;
+    roundWinner = 'player';
+    }
+    else if (playerSelection == "rock" && computerSelection == "rock") {
+    roundWinner = 'tie';
+    }
+    else if (playerSelection == "scissors" && computerSelection == "rock") {
+    computerScore += 1;
+    roundWinner = 'computer';
+    }
+    else if (playerSelection == "scissors" && computerSelection == "paper") {
+    playerScore += 1;
+    roundWinner = 'player';
+    }
+    else if (playerSelection == "scissors" && computerSelection == "scissors") {
+    roundWinner = 'tie';
+    }
+    else if (playerSelection == "paper" && computerSelection == "rock") {
+    playerScore += 1;
+    roundWinner = 'player';
+    }
+    else if (playerSelection == "paper" && computerSelection == "scissors") {
+    computerScore += 1;
+    roundWinner = 'computer';
+    }
+    else if (playerSelection == "paper" && computerSelection == "paper") {
+    roundWinner = 'tie';
+    }
+    
+    updateScore();
+    
+    if (playerScore == 5) {
+      playerScore = 0;
+      computerScore = 0;
+      alert('Player Wins! Make a selection to play again.');
+  }
+    else if(computerScore ==5) {
+      playerScore = 0;
+      computerScore = 0;
+      alert('Computer Wins! Make a selection to play again.');
+    }
 }
-else if (playerSelection == "rock" && computerSelection == "scissors") {
- alert("Player wins! Rock beats scissors.")
- playerScore += 1;
-}
-else if (playerSelection == "rock" && computerSelection == "rock") {
- alert("Tied, no one wins.")
-}
-else if (playerSelection == "scissors" && computerSelection == "rock") {
- alert("Computer wins! Rock beats scissors.")
- computerScore += 1;
-}
-else if (playerSelection == "scissors" && computerSelection == "paper") {
-alert("Player wins! Scissors beats paper.")
-playerScore += 1;
-}
-else if (playerSelection == "scissors" && computerSelection == "scissors") {
- alert("Tied, no one wins.")
-}
-else if (playerSelection == "paper" && computerSelection == "rock") {
- alert("Player wins! Paper beats rock.")
- playerScore += 1;
-}
-else if (playerSelection == "paper" && computerSelection == "scissors") {
-alert("Computer wins! Scissors beats paper.")
-computerScore += 1;
-}
-else if (playerSelection == "paper" && computerSelection == "paper") {
- alert("Tied, no one wins.")
-}
-}
-while (playerScore < 5 && computerScore < 5) {
-playRound();
-console.log(`Player Score: ${playerScore} to Computer Score: ${computerScore}`);
-}
-*\
